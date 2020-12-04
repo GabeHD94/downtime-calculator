@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <link href="calcstyle.css" rel="stylesheet" type="text/css" />
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:@1&display=swap" rel="stylesheet">
+
+    <meta name="viewport" content="width=device-width">
+
+</head>
+<div class="calcWrapper">
+    <table>
+        <tbody>
+            <tr>
+                <td>Customer's RMR:</td>
+                <td><input id="RMR" type="number" /></td>
+            </tr>
+            <tr>
+                <td>Non-Functioning Cameras:</td>
+                <td><input id="bcam" type="number" /></td>
+            </tr>
+            <!-- Divide RMR by the number of sensors to get the cost of each sensor per month -->
+            <tr>
+                <td>Number of sensors:</td>
+                <td><input id="sensors" type="number" /></td>
+            </tr>
+            <!-- //Divide the value of each sensor's monthly cost by the number of days in the month -->
+            <tr>
+                <td>Number of days in the current month:</td>
+                <td><input id="days" type="number" /></td>
+                <!-- //multiply the daily cost of a sensor to the number of sensors that are not Functioning -->
+            </tr>
+            <tr>
+                <td>Number of Non-Functioning Sensors:</td>
+                <td><input id="badSensors" type="number" /></td>
+                <!-- //multiply the combined daily cost of the non-functional sensors to the number of days they were not working. -->
+            </tr>
+            <tr>
+                <td>Days not functioning:</td>
+                <td><input id="daysDown" type="number" /></td>
+                <!-- //multiply the combined daily cost of the non-functional sensors to the number of days they were not working. -->
+            </tr>
+        </tbody>
+    </table>
+    <div>
+        <div class="totalwrapper">Credit Total:$<span id="payment" class="output"></span></div>
+    </div>
+    <button id="btn">Calculate</button>
+
+</div>
+<script>
+    let btn = document.getElementById('btn')
+
+    btn.addEventListener('click', function () {
+        let rmr = document.getElementById('RMR').value;
+        let cam = document.getElementById('bcam').value;
+        let sens = document.getElementById('sensors').value;
+        let dayMonth = document.getElementById('days').value;
+        let bSensors = document.getElementById('badSensors').value;
+        let down = document.getElementById('daysDown').value;
+        let rmrCam = cam * 5 / dayMonth * down;
+        let getDowntime = document.getElementById('payment').value = rmr / sens / dayMonth * bSensors * down + rmrCam;
+        if (sens == 0 || NaN || null) {
+            getDowntime = rmr / dayMonth * bSensors * down + rmrCam;
+        }
+        let downtimeTotal = getDowntime.toFixed(2);
+        document.getElementById("payment").innerHTML = downtimeTotal;
+        if (getDowntime == NaN || null || 0) {
+            document.getElementById("payment").innerHTML = downtimeTotal;
+        }
+
+
+        console.log(rmrCam)
+    })
+</script>
